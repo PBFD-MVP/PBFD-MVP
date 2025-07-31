@@ -1,0 +1,55 @@
+﻿@using VisitorLog_PBFD.ViewModels
+@model IEnumerable<LocationViewModel>
+
+@{
+    ViewBag.Title = "Select locations";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    @using (Html.BeginForm("Index", "Locations", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="personId" value="@ViewBag.PersonId" />
+
+        @foreach (var group in Model.OrderBy(m => m.ParentNode).GroupBy(m => m.ParentNode))
+        {
+            <h4 class="mt-4">@group.Key</h4> <!-- Display the group name -->
+            @foreach (var location in group)
+            {
+                <input type="hidden" name="selectedLocations[@location.ParentId][]" value="" />
+            }
+
+            <table class="table table-bordered table-hover mt-2">
+                <thead class="thead-light">
+                    <tr>
+                        <th style="width: 60%;">Name</th>
+                        <th style="width: 25%;">Name Type</th>
+                        <th style="width: 10%;">Select</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var location in group.Select((item, index) => new { Item = item, Index = index + 1 }).OrderBy(g => g.Item.ChildNode))
+                    {
+                        <tr>
+                            <td>@location.Item.ChildNode</td>
+                            <td>@location.Item.NameTypeName</td>
+                            <td class="text-center">
+                                <input type="checkbox" class="form-check-input"
+                                       id="location-@location.Item.ChildId"
+                                       name="selectedLocations[@location.Item.ParentId][]"
+                                       value="@location.Item.ChildId|@location.Item.ChildLocationId"
+                                @(location.Item.IsSelected ? "checked" : "")
+                                @(string.IsNullOrEmpty(location.Item.ChildNode) ? "disabled" : "") />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+
+        <div class="text-center mt-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    }
+</div>

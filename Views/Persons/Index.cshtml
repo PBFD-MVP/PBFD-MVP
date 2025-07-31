@@ -1,0 +1,39 @@
+﻿@model VisitorLog_PBFD.Models.Person
+
+@{
+    ViewBag.Title = "Visitor Information";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center">Enter Visitor Information</h1>
+    @using (Html.BeginForm("Index", "Persons", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <!-- Hidden field for PersonId -->
+        @Html.HiddenFor(m => m.PersonId)
+
+        <div class="mb-3">
+            @Html.LabelFor(m => m.FirstName, new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3">
+            @Html.LabelFor(m => m.MiddleName, new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.MiddleName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.MiddleName, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3">
+            @Html.LabelFor(m => m.LastName, new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+        </div>
+        <div class="mb-3">
+            @Html.LabelFor(m => m.Email, new { @class = "form-label" })
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    }
+</div>
