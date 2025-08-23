@@ -11,6 +11,10 @@ namespace VisitorLog_PBFD.Services
     {
         private readonly ApplicationDbContext _context;
         private int _personId;
+
+        // RESEARCH IMPLEMENTATION: In-memory caches for performance optimization.
+        // In a production environment, these would be replaced by a distributed cache
+        // (e.g., Redis) for scalability and consistency across multiple application instances.
         private Dictionary<string, List<string>> _tableColumnCache = new();
         private Dictionary<string, List<NodeViewModel>> _hierarchyPathChildrenCache = new();
         private Dictionary<string, NodeViewModel> _hierarchyPathSingleNodeCache = new();
