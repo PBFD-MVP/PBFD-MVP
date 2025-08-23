@@ -23,25 +23,7 @@ namespace VisitorLog_PBFD.Controllers
 
             // Get the view model using the reusable service
             var locationViewModels = await _locationSaveService.GetLocationViewModelsAsync(personId, selectedLocationIds);
-
-            /*if (selectedLocationIds == "91,101,119,185")
-            //if (selectedLocationIds == "88,76,44,37")
-            //if (selectedLocationIds == "19,18,9,8")
-            {
-                var idsToFilter = new List<int> { 156, 164, 138, 139, 146, 147, 149 };
-                //var idsToFilter = new List<int> { 91, 94, 101, 119, 135, 185 };
-                //var idsToFilter = new List<int> { 26, 37, 44, 75, 76, 88, 171, 172, 173 };
-                // Filter the locationViewModels where ChildLocationId matches any in the list
-                var locationViewMod = locationViewModels
-                    .Where(w => idsToFilter.Contains(w.ChildLocationId))
-                    .ToList();
-                return View(locationViewMod);
-            }
-            else
-            {
-            */
             return View(locationViewModels);
-            //}
         }
 
         [HttpPost]
