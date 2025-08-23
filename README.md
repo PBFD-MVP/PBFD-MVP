@@ -1,5 +1,7 @@
 # VisitorLog_PBFD
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16883985.svg)](https://doi.org/10.5281/zenodo.16883985)
+
 This repository contains the source code for a Minimum Viable Product (MVP) developed to support the research paper, **"PBFD and PDFD: Formally Defined and Verified Methodologies and Empirical Evaluation for Scalable Full-Stack Software Engineering."**
 
 This is an ASP.NET MVC application that allows users to log their visits to all continents in the world. This application serves as a demonstration of the **Primary Breadth-First Development (PBFD)** methodology.
