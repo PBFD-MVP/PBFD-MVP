@@ -1,58 +1,99 @@
-**Project Overview**
+# VisitorLog_PBFD
 
-VisitorLog_PBFD is an ASP.NET MVC application that allows users to log their visits to all continents in the world. This application serves as a minimal viable product (MVP) to demonstrate the Primary Breadth-First Development (PBFD) methodology.
+This repository contains the source code for a Minimum Viable Product (MVP) developed to support the research paper, **"PBFD and PDFD: Formally Defined and Verified Methodologies and Empirical Evaluation for Scalable Full-Stack Software Engineering."**
 
-**Prerequisites**
+This is an ASP.NET MVC application that allows users to log their visits to all continents in the world. This application serves as a demonstration of the **Primary Breadth-First Development (PBFD)** methodology.
 
-To build and run this application, you will need:
-* Microsoft Visual Studio Professional 2022
-* SQL Server 2022
-* SQL Server Management Studio (SSMS) v.20
+> ⚠️ **Disclaimer**: The code is provided for research and verification purposes only and is not intended for production use.
 
-Note: While other versions may work, this solution was built and tested exclusively with the versions listed above.
+## Requirements
 
-**Setup Instructions**
+To build and run this application, you will need the following development environment. This solution was built and tested with the versions listed below.
 
-Follow these steps to set up the database and run the application for the first time.
+- Microsoft Visual Studio Professional 2022
+- .NET 6.0 SDK
+- SQL Server 2022
+- SQL Server Management Studio (SSMS) v.20
 
-1. Download the Solution: Clone or download the solution file to your local machine.
+## Setup and Installation
 
-2. Open in Visual Studio: Open the solution file (.sln) in Visual Studio. The necessary NuGet packages should be restored automatically. If not, rebuild the solution to download them.
+Follow these steps to get the application up and running on your local machine.
 
-3. Update the Connection String:
+### 1. Clone the Repository
+Clone this repository to your local machine using Git:
+```bash
+git clone https://github.com/PBFD-MVP/PBFD-MVP.git
+```
 
-    * Open the appsettings.json file in your solution.
+### 2. Open the Solution
+Open the `VisitorLog_PBFD.sln` solution file in Visual Studio 2022. The necessary NuGet packages should be restored automatically. If not, rebuild the solution to trigger the package restore.
 
-    * Find the ConnectionStrings section and update the DefaultConnection value to match the server name, database name, and user credentials of your local SQL Server environment.
+### 3. Create the Database
+Using SQL Server Management Studio (SSMS), create a new, empty database named `VisitorLog_PBFD`.
 
-4. Create the Database: Using SQL Server Management Studio (SSMS), create a new empty database named VisitorLog_PBFD.
+### 4. Update Connection String
+In your solution, open the `appsettings.json` file. Find the `ConnectionStrings` section and update the `DefaultConnection` value to match your local SQL Server credentials.
 
-5. Generate Static Tables:
+### 5. Run Migrations
+Open the Package Manager Console in Visual Studio by navigating to:
 
-    * In Visual Studio, go to Tools > NuGet Package Manager > Package Manager Console.
+**Tools > NuGet Package Manager > Package Manager Console**
 
-    * In the console, type the following command and press Enter:
+Run the following command to apply the existing migrations and generate all necessary tables in your new database:
 
-      *Update-Database*
+```powershell
+Update-Database
+```
 
-    * This command will apply the existing migrations and generate all static tables in your new VisitorLog_PBFD database.
+### 6. Generate Dynamic Tables (First Run Only)
+In your solution, open the `appsettings.json` file.
 
-6. Generate Dynamic Tables (First Run Only):
+Change the `CreateDatabase` setting to `true`:
 
-    * In your solution, open the appsettings.json file.
+```json
+"CreateDatabase": true
+```
 
-    * Change the "CreateDatabase" setting to true:
+Run the application in Visual Studio (press **F5**). The application will create all dynamic tables and launch in your web browser.
 
-      *"CreateDatabase": true*
+### 7. Subsequent Runs
+After the dynamic tables have been generated, close the application.
 
-    * Run the application in Visual Studio (e.g., by pressing F5). The application will create all the dynamic tables and then launch in your web browser.
+Change the `CreateDatabase` setting back to `false` to prevent table recreation:
 
-7. Subsequent Runs:
+```json
+"CreateDatabase": false
+```
 
-    * After the dynamic tables have been generated, close the application.
+## Research Implementation Notes
 
-    * Go back to the appsettings.json file and change the "CreateDatabase" setting back to false to prevent the tables from being recreated on subsequent executions.
-  
-**Notes on Database Setup**
+This solution includes several implementation choices specific to its research context:
 
-This solution includes a custom mechanism to generate dynamic tables for simplicity during development. In a production environment, you should move steps 6-8 to a standalone utility or a more robust database management solution to avoid generating tables every time the application is executed.
+### Database Initialization & Setup
+The database setup process uses a custom initialization mechanism (controlled by the `CreateDatabase` flag in `appsettings.json`) to ensure simplicity and repeatability during **research validation and demonstration**.
+
+*   **In this MVP:** The `CreateDatabase: true` setting automates the generation of dynamic tables on application startup, allowing researchers to quickly get the application running.
+*   **In a production environment:** This entire initialization process would be moved to dedicated deployment scripts or a more robust database migration utility to avoid the overhead and potential security risks of generating tables on every execution.
+
+This choice was made to lower the barrier to entry for reproducing the results described in our paper, focusing the research validation on the core PBFD methodology rather than on complex deployment infrastructure.
+
+### Caching Strategy
+The application uses in-memory dictionaries for caching performance-sensitive operations:
+
+```csharp
+// RESEARCH IMPLEMENTATION: In-memory caches for performance optimization.
+// In a production environment, these would be replaced by a distributed cache
+// (e.g., Redis) for scalability and consistency across multiple application instances.
+private Dictionary<string, List<string>> _tableColumnCache = new();
+private Dictionary<string, List<NodeViewModel>> _hierarchyPathChildrenCache = new();
+private Dictionary<string, NodeViewModel> _hierarchyPathSingleNodeCache = new();
+private Dictionary<string, Dictionary<string, object>> _tableColumnBitmapCache = new();
+```
+
+These implementations are sufficient for the single-instance research MVP but would be replaced with distributed caching solutions in a production environment.
+
+## License
+This repository is licensed under the **Apache-2.0 License**.
+
+## Contact
+For questions regarding this repository or the research it supports, please contact [dliu@us.ibm.com].
